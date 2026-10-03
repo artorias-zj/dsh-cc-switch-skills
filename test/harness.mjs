@@ -134,9 +134,12 @@ console.log("== 监视失效 ==");
 		};
 		apply(ctx, { dir: root });
 		await registered[0].list();
+		// 挂载成功本身会触发一次失效，先等它落定再计数。
+		await new Promise((r) => setTimeout(r, 400));
+		const before = invalidated;
 		await writeFile(join(root, "new-skill.md"), "---\nname: new-skill\ndescription: x\n---\n正文\n", "utf8");
 		await new Promise((r) => setTimeout(r, 1200));
-		check("新增文件触发失效", invalidated > 0, `invalidated=${invalidated}`);
+		check("新增文件触发失效", invalidated > before, `before=${before} after=${invalidated}`);
 	} finally {
 		await rm(root, { recursive: true, force: true });
 	}
