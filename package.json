@@ -1,6 +1,6 @@
 {
   "name": "dsh-cc-switch-skills",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "DSH 插件：启动时加载 C:\\Users\\<当前用户>\\.cc-switch\\skills 中的全部 skill（SKILL.md 目录包与平铺 .md），并自动监视增删改。Loads every skill from the current user's .cc-switch\\skills directory into DeepSeek Harness at startup.",
   "license": "MIT",
   "repository": {
