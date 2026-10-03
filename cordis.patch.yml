@@ -1,0 +1,5 @@
+# dsh-cc-switch-skills bundle 层：插入 cc-switch skill 提供方插件行。
+- insert:
+    - id: dsh-cc-switch-skills
+      name: 'dsh-cc-switch-skills'
+      config: {}

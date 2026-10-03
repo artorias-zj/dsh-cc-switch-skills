@@ -1,0 +1,48 @@
+{
+  "name": "dsh-cc-switch-skills",
+  "version": "1.0.0",
+  "description": "DSH 插件：启动时加载 C:\\Users\\<当前用户>\\.cc-switch\\skills 中的全部 skill（SKILL.md 目录包与平铺 .md），并自动监视增删改。Loads every skill from the current user's .cc-switch\\skills directory into DeepSeek Harness at startup.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/artorias-zj/dsh-cc-switch-skills.git"
+  },
+  "bugs": {
+    "url": "https://github.com/artorias-zj/dsh-cc-switch-skills/issues"
+  },
+  "homepage": "https://github.com/artorias-zj/dsh-cc-switch-skills#readme",
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "plugin",
+    "skill",
+    "cc-switch"
+  ],
+  "type": "module",
+  "main": "./lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "README.zh.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "dependencies": {
+    "yaml": "^2.4.2"
+  },
+  "peerDependencies": {
+    "cordis": ">=4.0.0-rc <5"
+  },
+  "engines": {
+    "node": "^22.15.0 || >=24.0.0"
+  }
+}
