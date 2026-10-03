@@ -2,6 +2,8 @@
 
 [English](README.md) | 中文
 
+[![Listed on dsh-plugin.org](https://dsh-plugin.org/badges/listed.svg)](https://dsh-plugin.org/plugins/artorias-zj/dsh-cc-switch-skills)
+
 DeepSeek Harness（DSH）插件：**启动 DSH 时自动加载 `C:\Users\<当前用户>\.cc-switch\skills` 目录里的所有 skill**，并监视该目录的增删改（无需重启）。
 
 `~/.cc-switch/skills` 是 cc-switch（Claude Code 配置切换工具）保存 skill 的目录，每个 skill 是一个含 `SKILL.md` 的目录包。本插件把这些 skill 接入 DSH 的 `ctx.skills` 注册表，使其出现在会话的 skill 目录中，可通过 `skill` 工具按需加载。
@@ -21,20 +23,19 @@ DeepSeek Harness（DSH）插件：**启动 DSH 时自动加载 `C:\Users\<当前
 
 ## 安装
 
-先把本仓库克隆到本地并安装依赖：
+**方式一：命令行一键安装（推荐）**
 
 ```powershell
-git clone https://github.com/artorias-zj/dsh-cc-switch-skills.git
-cd dsh-cc-switch-skills
-pnpm install   # 或 npm install，仅安装 yaml 依赖
+dsh plugin --profile web add github:artorias-zj/dsh-cc-switch-skills
 ```
 
-再任选其一接入 DSH（下文以 `<路径>` 指代克隆目录的绝对路径）：
+（桌面端把 `--profile web` 换成 `--profile desktop`；已发布 npm 后可简写为 `dsh plugin --profile web add dsh-cc-switch-skills`。）
 
-1. **DSH 内安装（推荐）**：在 DSH 对话中让 agent 执行 `plugin_manager` 的 `install_bundle`，目标为 `<路径>`；或在 Web 侧边栏「插件」页安装本地路径。
-2. **手动安装**：把本包加入 profile 依赖并选中组合包——在 `~/.dsh/profiles/<profile>/package.json` 的 `dependencies` 中加入 `"dsh-cc-switch-skills": "link:<路径>"`，在 `dsh.profile.bundles` 列表末尾加入 `"dsh-cc-switch-skills"`，然后在 profile 目录执行 `pnpm install`。
+**方式二：DSH 内安装**：先把仓库克隆到本地（`git clone https://github.com/artorias-zj/dsh-cc-switch-skills.git` 后在目录内执行 `pnpm install`），再在 DSH 对话中让 agent 执行 `plugin_manager` 的 `install_bundle` 指向克隆目录，或在 Web 侧边栏「插件」页安装本地路径。
 
-> 注意：DSH 以 `link:` 方式引用本地目录，请保留克隆目录（含 `node_modules`）不要移动或删除。
+**方式三：手动安装**：把本包加入 profile 依赖并选中组合包——在 `~/.dsh/profiles/<profile>/package.json` 的 `dependencies` 中加入 `"dsh-cc-switch-skills": "link:<克隆目录>"`，在 `dsh.profile.bundles` 列表末尾加入 `"dsh-cc-switch-skills"`，然后在 profile 目录执行 `pnpm install`。
+
+> 注意：本地安装（方式二 / 三）以 `link:` 方式引用目录，请保留克隆目录（含 `node_modules`）不要移动或删除。
 
 安装完成后（在线 profile 立即生效，否则重启 DSH），skill 即出现在会话目录中。
 
@@ -57,6 +58,18 @@ pnpm install   # 或 npm install，仅安装 yaml 依赖
 - 缺少 `description` → 回退到正文首个非空行摘要（截断 160 字符）并告警。
 
 仍然跳过并告警的情况：YAML frontmatter 无效、缺少 frontmatter、调用策略布尔值非法（如 `user-invocable: maybe`）、名称回退后仍不合法。以上告警输出到 DSH 日志（`hub.log`）。
+
+## 插件信息
+
+| 项 | 值 |
+|---|---|
+| 一句话价值 | 启动 DSH 即自动加载 `~/.cc-switch\skills` 里的全部 skill（含 scripts/references 资源根），增删改免重启 |
+| 能力分类 | 技能与智能体 |
+| 安装命令 | `dsh plugin --profile web add github:artorias-zj/dsh-cc-switch-skills` |
+| 支持 profile | web / desktop |
+| 兼容与运行要求 | DeepSeek Harness 0.2.x（`ctx.skills` 服务）；Node.js ^22.15 或 >=24；Windows / macOS / Linux |
+| 权限与外部服务 | 仅读取本地 `~/.cc-switch\skills` 目录；无外部服务、无遥测、不修改 skill 文件 |
+| 许可证 | MIT |
 
 ## 卸载
 

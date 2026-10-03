@@ -2,6 +2,8 @@
 
 English | [中文](README.zh.md)
 
+[![Listed on dsh-plugin.org](https://dsh-plugin.org/badges/listed.svg)](https://dsh-plugin.org/plugins/artorias-zj/dsh-cc-switch-skills)
+
 A DeepSeek Harness (DSH) plugin that **loads every skill in `C:\Users\<current user>\.cc-switch\skills` when DSH starts**, and watches that directory for adds, renames, and deletes (no restart needed).
 
 `~/.cc-switch/skills` is where cc-switch keeps its skills, each a directory bundle with a `SKILL.md`. This plugin feeds those skills into DSH's `ctx.skills` registry so they appear in the session skill catalog and can be loaded through the `skill` tool.
@@ -21,20 +23,19 @@ A DeepSeek Harness (DSH) plugin that **loads every skill in `C:\Users\<current u
 
 ## Install
 
-Clone the repository and install its dependency first:
+**Option 1: one-line CLI install (recommended)**
 
 ```powershell
-git clone https://github.com/artorias-zj/dsh-cc-switch-skills.git
-cd dsh-cc-switch-skills
-pnpm install   # or npm install — only pulls in the yaml dependency
+dsh plugin --profile web add github:artorias-zj/dsh-cc-switch-skills
 ```
 
-Then wire it into DSH (below, `<path>` is the clone directory's absolute path):
+(Use `--profile desktop` for the desktop profile; once published to npm this becomes `dsh plugin --profile web add dsh-cc-switch-skills`.)
 
-1. **From DSH (recommended)**: run `plugin_manager` `install_bundle` targeting `<path>`, or install the local path from the Web sidebar Plugins page.
-2. **Manually**: add `"dsh-cc-switch-skills": "link:<path>"` to `dependencies` and `"dsh-cc-switch-skills"` to `dsh.profile.bundles` in `~/.dsh/profiles/<profile>/package.json`, then run `pnpm install` in the profile directory.
+**Option 2: from DSH** — clone the repository (`git clone https://github.com/artorias-zj/dsh-cc-switch-skills.git`, then run `pnpm install` inside it), then run `plugin_manager` `install_bundle` targeting the clone directory, or install the local path from the Web sidebar Plugins page.
 
-> Note: DSH references the local directory via `link:` — keep the clone (including `node_modules`) in place.
+**Option 3: manually** — add `"dsh-cc-switch-skills": "link:<clone dir>"` to `dependencies` and `"dsh-cc-switch-skills"` to `dsh.profile.bundles` in `~/.dsh/profiles/<profile>/package.json`, then run `pnpm install` in the profile directory.
+
+> Note: local installs (options 2 / 3) reference the directory via `link:` — keep the clone (including `node_modules`) in place.
 
 Once installed (live profiles apply immediately; otherwise restart DSH) the skills show up in the session catalog.
 
@@ -57,6 +58,18 @@ To achieve "load *every* skill", incomplete frontmatter is tolerated more than t
 - missing `description` → falls back to the first non-empty body line (truncated to 160 chars) with a warning.
 
 Still skipped with a warning: invalid YAML frontmatter, missing frontmatter, invalid invocation booleans (e.g. `user-invocable: maybe`), and names that stay invalid after the fallback. Warnings go to the DSH log (`hub.log`).
+
+## Plugin Info
+
+| Field | Value |
+|---|---|
+| One-line value | Loads every skill under `~/.cc-switch\skills` (with scripts/references resource bases) into DSH at startup, live-refreshed on change |
+| Category | Skills & Agents |
+| Install command | `dsh plugin --profile web add github:artorias-zj/dsh-cc-switch-skills` |
+| Supported profiles | web / desktop |
+| Compatibility | DeepSeek Harness 0.2.x (`ctx.skills` service); Node.js ^22.15 or >=24; Windows / macOS / Linux |
+| Permissions & services | Reads the local `~/.cc-switch\skills` directory only; no external services, no telemetry, never mutates skill files |
+| License | MIT |
 
 ## Uninstall
 
